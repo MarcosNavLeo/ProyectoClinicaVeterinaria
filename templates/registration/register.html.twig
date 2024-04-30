@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registro</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/login.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+    p,label{
+        color:white;
+    }
+    </style>
+</head>
+<body>
+    {% block body %}
+    <div class="container-fluid">
+     {% for flash_error in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+    {% endfor %}
+        <div class="row">
+            <div class="col-lg-6 col-md-6 form-container">
+                <div class="col-lg-8 col-md-12 col-sm-9 col-xs-12 form-box text-center">
+                    <div class="logo mt-5 mb-3">
+                        
+                    </div>
+                    <div class="heading mb-3">
+                        <h4>Crear cuenta</h4>
+                    </div>
+                    {{ form_start(registrationForm, {'attr': {'class': 'needs-validation', 'novalidate': ''}}) }}
+
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            {{ form_widget(registrationForm.username, {'attr': {'class': 'form-control w-100', 'placeholder': 'Nombre de usuario'}}) }}
+                            {{ form_errors(registrationForm.username) }}
+                        </div>
+                        <div class="col-6 mb-3">
+                            {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control w-100', 'placeholder': 'Email'}}) }}
+                            {{ form_errors(registrationForm.email) }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            {{ form_widget(registrationForm.firstName, {'attr': {'class': 'form-control w-100', 'placeholder': 'Nombre'}}) }}
+                            {{ form_errors(registrationForm.firstName) }}
+                        </div>
+                        <div class="col-6 mb-3">
+                            {{ form_widget(registrationForm.lastName, {'attr': {'class': 'form-control w-100', 'placeholder': 'Apellido'}}) }}
+                            {{ form_errors(registrationForm.lastName) }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control w-100', 'placeholder': 'Contraseña'}}) }}
+                            {{ form_errors(registrationForm.plainPassword) }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <div class="mb-3">
+                                {{ form_widget(registrationForm.foto, {'attr': {'class': 'form-control', 'type': 'file', 'id': 'formFile'}}) }}
+                            </div>
+                            {{ form_errors(registrationForm.foto) }}
+                        </div>
+                    </div>
+                  
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            {{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'form-check-input'}}) }}
+                            {{ form_label(registrationForm.agreeTerms) }}
+                            {{ form_errors(registrationForm.agreeTerms) }}
+                        </div>
+                    </div>
+
+                    
+
+                    <button type="submit" class="btn" style="width: 100%;">Registrarse</button>
+                    <p class="text-center mt-3">
+                        ¿Ya tienes cuenta? <a href="{{ path('app_login') }}" class="register-link">Iniciar Sesión</a>
+                    </p>
+                    
+                {{ form_end(registrationForm) }}
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6 d-none d-md-block image-container"></div>
+        </div>
+    </div>
+    {% endblock %}
+</body>
+</html>
+
+
+
+

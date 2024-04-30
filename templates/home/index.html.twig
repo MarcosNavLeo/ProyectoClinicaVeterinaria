@@ -1,0 +1,150 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+  <!-- about section -->
+
+  <section class="about_section layout_padding">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="img-box">
+            <img src="imagenes/about.png" alt="" />
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="detail-box">
+            <h2 class="custom_heading">
+              Acerca de nuestra
+              <span>Clínica</span>
+            </h2>
+            <p>Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde que Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde que</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {# <!-- service section -->
+  <section class="service_section layout_padding">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-6 offset-md-2">
+          <h2 class="custom_heading">
+            Our <span>Services</span>
+          </h2>
+          <div class="container layout_padding2">
+            <div class="row">
+              <div class="col-md-4">
+                <div class="img_box">
+                  <img src="imagenes/s-1.png" alt="">
+                </div>
+                <div class="detail_box">
+                  <h6>
+                    Pet Care
+                  </h6>
+                  <p>
+                    onsectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                    enim ad minim veniam, quis nostrud exe
+                  </p>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="img_box">
+                  <img src="imagenes/s-2.png" alt="">
+                </div>
+                <div class="detail_box">
+                  <h6>
+                    Pet Hotel
+                  </h6>
+                  <p>
+                    onsectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                    enim ad minim veniam, quis nostrud exe
+                  </p>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="img_box">
+                  <img src="imagenes/s-3.png" alt="">
+                </div>
+                <div class="detail_box">
+                  <h6>
+                    Emergency
+                  </h6>
+                  <p>
+                    onsectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                    enim ad minim veniam, quis nostrud exe
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <a href="">
+              Read More
+            </a>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <img src="imagenes/tool.png" alt="" class="w-100">
+        </div>
+      </div>
+    </div>
+  </section> #}
+
+  <!-- end service section -->
+
+  <section class="gallery-section layout_padding">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <h2 class="mr-3">Mascotas</h2>
+        <button class="btn btn-secondary" id="btnañadirMasco">Añadir mascota</button>
+      </div>
+    </div>
+    <div class="container" id="mascotas-container">
+      <!-- Las imágenes de las mascotas se añadirán aquí -->
+    </div>
+  </section>
+
+  <div class="modal fade" id="addPetModal" tabindex="-1" role="dialog" aria-labelledby="addPetModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addPetModalLabel">Añadir mascota</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">
+        <form>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="nombreMascota" class="form-label">Nombre</label>
+                    <input type="text" class="form-control" id="nombreMascota" required />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="especieMascota" class="form-label">Especie</label>
+                    <input type="text" class="form-control" id="especieMascota" required />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="razaMascota" class="form-label">Raza</label>
+                    <input type="text" class="form-control" id="razaMascota" required />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="fechaNacimientoMascota" class="form-label">Fecha de nacimiento</label>
+                    <input type="text" class="form-control" id="fechaNacimientoMascota" required />
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="fotoMascota" class="form-label">Foto</label>
+                <input type="file" class="form-control" id="fotoMascota" required />
+            </div>
+        </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary">Guardar cambios</button>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
