@@ -32,7 +32,7 @@ class Citas
 
     #[ORM\ManyToOne(inversedBy: 'citas')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Mascotas $mascostas = null;
+    private ?Mascotas $mascotas = null;
 
     #[ORM\OneToMany(targetEntity: Consultas::class, mappedBy: 'citas')]
     private Collection $consultas;
@@ -95,14 +95,14 @@ class Citas
         return $this;
     }
 
-    public function getMascostas(): ?Mascotas
+    public function getMascotas(): ?Mascotas
     {
-        return $this->mascostas;
+        return $this->mascotas;
     }
 
-    public function setMascostas(?Mascotas $mascostas): static
+    public function setMascotas(?Mascotas $mascotas): static
     {
-        $this->mascostas = $mascostas;
+        $this->mascotas = $mascotas;
 
         return $this;
     }
@@ -135,5 +135,10 @@ class Citas
         }
 
         return $this;
+    }
+    public function __toString(): string
+    {
+        // Devuelve el nombre de usuario como representación de la entidad User
+        return $this->user->getUsername();
     }
 }

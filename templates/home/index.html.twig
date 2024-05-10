@@ -1,6 +1,64 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+<!-- slider section -->
+      <section class="slider_section position-relative">
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+          <ol class="carousel-indicators">
+            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+          </ol>
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <div class="container-fluid">
+                <div class="row">
+                  <div class="col-md-4 offset-md-2">
+                    <div class="slider_detail-box">
+                      <h1>
+                        Profesional
+                        <span>La mejor Clinica para tu mascota</span>
+                      </h1>
+                      <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever</p>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="slider_img-box">
+                    <img src="{{ asset('imagenes/slider-img.png') }}" alt="" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Aquí agregamos la condición para mostrar el texto "Citas" -->
+            <div class="carousel-item {% if app.request.attributes.get('_route') == 'app_citas' %}{% endif %}">
+              <div class="container-fluid">
+                <div class="row">
+                  <div class="col-md-4 offset-md-2">
+                    <div class="slider_detail-box">
+                      <h1>
+                        Profesional
+                        <span>La mejor Clinica para tu mascota</span>
+                      </h1>
+                      <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever</p>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="slider_img-box">
+                      <img src="imagenes/slider-img.png" alt="" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Fin de la condición -->
+          </div>
+        </div>
+      </section>
+
+      <!-- end slider section -->
+    </div>
   <!-- about section -->
 
   <section class="about_section layout_padding">

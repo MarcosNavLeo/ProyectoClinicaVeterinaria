@@ -34,7 +34,7 @@ class Mascotas
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\OneToMany(targetEntity: Citas::class, mappedBy: 'mascostas')]
+    #[ORM\OneToMany(targetEntity: Citas::class, mappedBy: 'mascotas')]
     private Collection $citas;
 
     #[ORM\Column(length: 255)]

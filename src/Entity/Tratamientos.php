@@ -35,7 +35,7 @@ class Tratamientos
 
     #[ORM\ManyToOne(inversedBy: 'tratamientos')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?medicamentos $medicamentos = null;
+    private ?Medicamentos $medicamentos = null;
 
     public function __construct()
     {
@@ -126,12 +126,12 @@ class Tratamientos
         return $this;
     }
 
-    public function getMedicamentos(): ?medicamentos
+    public function getMedicamentos(): ?Medicamentos
     {
         return $this->medicamentos;
     }
 
-    public function setMedicamentos(?medicamentos $medicamentos): static
+    public function setMedicamentos(?Medicamentos $medicamentos): static
     {
         $this->medicamentos = $medicamentos;
 

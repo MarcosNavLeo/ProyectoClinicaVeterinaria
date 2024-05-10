@@ -1,20 +1,143 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello CitasController!{% endblock %}
+{% block title %}Citas{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/symfony/ProyectoClinicaVeterinaria/src/Controller/CitasController.php'|file_link(0) }}">src/Controller/CitasController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/symfony/ProyectoClinicaVeterinaria/templates/citas/index.html.twig'|file_link(0) }}">templates/citas/index.html.twig</a></code></li>
-    </ul>
+<!-- slider section -->
+<section class="slider_section position-relative">
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+        </ol>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-4 offset-md-2">
+                            <div class="slider_detail-box">
+                                <h1>
+                                    <span>¡Programa una cita para tu mascota!</span>
+                                    </h1>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="slider_img-box">
+                                <img src="{{ asset('imagenes/slider-img.png') }}" alt="" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-4 offset-md-2">
+                            <div class="slider_detail-box">
+                                <h1>
+                                    <h1>
+                                        <span>¡Programa una cita para tu mascota!</span>
+                                        </h1>
+                                </h1>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="slider_img-box">
+                                <img src="{{ asset('imagenes/slider-img.png') }}" alt="" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- end slider section -->
+</div>
+<div class="container" style="margin-top: 120px;">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="my-4">Calendario de citas</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div >
+            <!-- Contenedor del Calendario -->
+            <div id='calendar'></div>
+        </div>
+    </div>
+<!-- Modal para pedir una cita -->
+<div class="modal fade" id="citaModal" tabindex="-1" role="dialog" aria-labelledby="citaModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="citaModalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Formulario para pedir una cita -->
+                <form id="citaForm">
+                    <div class="form-group">
+                        <label for="mascotaSelect">Elegir mascota</label>
+                        <select class="form-control" id="mascotaSelect" required>
+                            <option value="" disabled selected>Selecciona una mascota</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="motivoCita">Motivo de la cita</label>
+                        <input type="text" class="form-control" id="motivoCita" required>
+                    </div>
+                    <!-- Campos para la fecha y la hora -->
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="fechaCita">Fecha:</label>
+                                <p id="fechaCita" class="form-control"></p>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="horaCita">Hora:</label>
+                                <p id="horaCita" class="form-control"></p>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" id="guardarCita">Guardar cita</button>
+            </div>
+        </div>
+    </div>
+</div>
+    <!-- Modal para mostrar una cita -->
+    <div class="modal fade" id="mostrarCitaModal" tabindex="-1" role="dialog" aria-labelledby="mostrarCitaModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="mostrarCitaModalLabel">Detalles de la cita</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Detalles de la cita -->
+                    <p id="nombreMascota">Nombre de la mascota: </p>
+                    <p id="motivoCita">Motivo de la cita: </p>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-danger" id="eliminarCita">Cancelar cita</button>   
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
+
+

@@ -3,6 +3,7 @@
 namespace App\Controller\api;
 
 use App\Repository\MascotasRepository;
+use App\Service\MailerService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,6 +16,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use App\Entity\Mascotas;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use App\Repository\CitasRepository;
 
 class apiMascotas extends AbstractController
 {
@@ -26,8 +28,19 @@ class apiMascotas extends AbstractController
         if (!$mascotas) {
             throw new NotFoundHttpException('Mascotas no encontradas');
         }
+        $mascotasArray = [];
+        foreach ($mascotas as $mascota) {
+            $mascotasArray[] = [
+                'id' => $mascota->getId(),
+                'nombre' => $mascota->getNombre(),
+                'especie' => $mascota->getEspecie(),
+                'raza' => $mascota->getRaza(),
+                'fechaNacimiento' => $mascota->getFechaNacimiento()->format('Y-m-d'),
+                'foto' => $mascota->getFoto(),
+            ];
+        }
 
-        return $this->createResponse($mascotas);
+        return new JsonResponse($mascotasArray, JsonResponse::HTTP_OK);
     }
 
     #[Route('/api/mascotas/{id}', name: 'api_mascotas_user')]
@@ -45,15 +58,11 @@ class apiMascotas extends AbstractController
 
         $mascotas = $mascotaRepository->findBy(['user' => $id]);
 
+        // Si no hay mascotas, devolver un array vacío
         if (!$mascotas) {
-            throw new NotFoundHttpException('Mascotas no encontradas');
+            $mascotas = [];
         }
 
-        return $this->createResponse($mascotas);
-    }
-
-    private function createResponse($mascotas): JsonResponse
-    {
         $mascotasArray = [];
         foreach ($mascotas as $mascota) {
             $mascotasArray[] = [
@@ -61,17 +70,21 @@ class apiMascotas extends AbstractController
                 'nombre' => $mascota->getNombre(),
                 'especie' => $mascota->getEspecie(),
                 'raza' => $mascota->getRaza(),
-                'fechaNacimiento' => $mascota->getFechaNacimiento()->format('Y-m-d'), 
+                'fechaNacimiento' => $mascota->getFechaNacimiento()->format('Y-m-d'),
                 'foto' => $mascota->getFoto(),
             ];
         }
 
-        return new JsonResponse($mascotasArray);
+        return new JsonResponse($mascotasArray, JsonResponse::HTTP_OK);
     }
 
+
     #[Route('/api/mascotas/create/{idUser}', name: 'api_mascotas_create', methods: ['POST'])]
-    public function createMascota(Request $request, MascotasRepository $mascotaRepository, $idUser, UserRepository $userRepository, EntityManagerInterface $entityManagerInterface): JsonResponse
+    public function createMascota(Request $request, MascotasRepository $mascotaRepository, $idUser, UserRepository $userRepository, EntityManagerInterface $entityManagerInterface, MailerService $mailerService): JsonResponse
     {
+        if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            throw new UnauthorizedHttpException('Necesitas estar autenticado');
+        }
         $nombre = $request->get('nombre');
         $especie = $request->get('especie');
         $raza = $request->get('raza');
@@ -113,28 +126,56 @@ class apiMascotas extends AbstractController
         $mascota->setRaza($raza);
         $mascota->setFechaNacimiento(new \DateTime($fechaNacimiento));
         $mascota->setFoto($fotoFileName);
-        $mascota->setUser($user);  
+        $mascota->setUser($user);
 
 
         // Persistir la entidad
         $entityManagerInterface->persist($mascota);
         $entityManagerInterface->flush();
-        // Return a JSON response with the error message
-        return new JsonResponse(['status' => 'Error', 'message' => 'Error al crear la mascota: '], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+
+        // Enviar un correo electrónico al usuario para notificarle que se ha registrado una nueva mascota
+        $userEmail = $user->getEmail();
+        $petName = $mascota->getNombre();
+        $mailerService->sendPetRegisteredEmail($userEmail, $petName);
+
+        // Return a JSON response with the success message and the created pet
+        return new JsonResponse(['status' => 'Success', 'message' => 'Mascota creada correctamente', 'mascota' => $mascota], JsonResponse::HTTP_OK);
     }
 
     #[Route('/api/mascotas/delete/{id}', name: 'api_mascotas_delete', methods: ['DELETE'])]
-    public function deleteMascota(Request $request, MascotasRepository $mascotaRepository, $id, EntityManagerInterface $entityManagerInterface): JsonResponse
+    public function deleteMascota(Request $request, MascotasRepository $mascotaRepository, $id, EntityManagerInterface $entityManagerInterface, MailerService $mailerService, CitasRepository $citasRepository): JsonResponse
     {
+        if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            throw new UnauthorizedHttpException('Necesitas estar autenticado');
+        }
+
         $mascota = $mascotaRepository->find($id);
 
         if (!$mascota) {
             return new JsonResponse(['status' => 'Error', 'message' => 'Mascota no encontrada'], JsonResponse::HTTP_NOT_FOUND);
         }
 
+        // Obtener todas las citas asociadas a la mascota
+        $citas = $citasRepository->findBy(['mascotas' => $mascota]);
+
+        // Eliminar cada una de las citas asociadas a la mascota
+        foreach ($citas as $cita) {
+            $entityManagerInterface->remove($cita);
+        }
+
+        // Flushear los cambios para asegurarse de que las citas se eliminen correctamente
+        $entityManagerInterface->flush();
+
+        // Ahora podemos eliminar la mascota
         $entityManagerInterface->remove($mascota);
         $entityManagerInterface->flush();
 
-        return new JsonResponse(['status' => 'OK', 'message' => 'Mascota eliminada'], JsonResponse::HTTP_OK);
+        // Enviar un correo electrónico al usuario para notificarle que se ha eliminado una mascota
+        $userEmail = $mascota->getUser()->getEmail();
+        $petName = $mascota->getNombre();
+        $mailerService->sendPetDeletedEmail($userEmail, $petName);
+
+        return new JsonResponse(['status' => 'OK', 'message' => 'Mascota eliminada junto con todas sus citas'], JsonResponse::HTTP_OK);
     }
+
 }
