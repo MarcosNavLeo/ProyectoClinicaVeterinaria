@@ -49,6 +49,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Mascotas::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $mascotas;
 
+    #[ORM\Column(type: 'boolean')]
+    private $isVerified = false;
+
     public function __construct()
     {
         $this->citas = new ArrayCollection();
@@ -229,6 +232,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $mascota->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getFirstName() . ' ' . $this->getLastName();
+    }
+
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): static
+    {
+        $this->isVerified = $isVerified;
 
         return $this;
     }

@@ -24,9 +24,6 @@ class Medicamentos
     private ?string $instrucciones = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $foto = null;
-
-    #[ORM\Column(length: 255)]
     private ?string $dosis = null;
 
     #[ORM\OneToMany(targetEntity: Tratamientos::class, mappedBy: 'medicamentos')]
@@ -62,18 +59,6 @@ class Medicamentos
     public function setInstrucciones(string $instrucciones): static
     {
         $this->instrucciones = $instrucciones;
-
-        return $this;
-    }
-
-    public function getFoto(): ?string
-    {
-        return $this->foto;
-    }
-
-    public function setFoto(string $foto): static
-    {
-        $this->foto = $foto;
 
         return $this;
     }
@@ -118,5 +103,10 @@ class Medicamentos
         }
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->nombre;
     }
 }

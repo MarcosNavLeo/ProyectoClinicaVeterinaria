@@ -43,12 +43,29 @@
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.css" rel="stylesheet" />
 
+     <!-- DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap5.min.css" />
+
+    <!-- DataTables Responsive CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css" />
+
+    <!-- DataTables JS -->
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap5.min.js"></script>
+
+    <!-- DataTables Responsive JS -->
+    <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+
 <script>
       var idUser = '{{ app.user.id }}'
     </script>
     
     <script type="text/javascript" src="{{ asset('js/home.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/citas.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/citas_veterinario.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/crudMedicamentos.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/consultas_clientes.js') }}"></script>
+    
 
     
   </head>
@@ -59,23 +76,39 @@
       <header class="header_section">
         <div class="container-fluid">
           <nav class="navbar navbar-expand-lg custom_nav-container">
-            <a class="navbar-brand" href="{{ path('app_home') }}">
-              <img src="{{ asset('imagenes/logo.png') }}" alt="" />
-              <span>Clinica Veterinaria</span>
-            </a>
+            {% if 'ROLE_VETERINARIO' in app.user.roles %}
+              <span class="navbar-brand">
+                <img src="{{ asset('imagenes/logo.png') }}" alt="" />
+                <span>Clinica Veterinaria</span>
+              </span>
+            {% else %}
+              <a class="navbar-brand" href="{{ path('app_home') }}">
+                <img src="{{ asset('imagenes/logo.png') }}" alt="" />
+                <span>Clinica Veterinaria</span>
+              </a>
+            {% endif %}
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav ml-auto nav-links">
-                <li class="nav-item {% if app.request.attributes.get('_route') == 'app_home' %}active{% endif %}">
-                  <a class="nav-link" href="{{ path('app_home') }}"><i class="fas fa-home"></i> Inicio</a>
-                </li>
-                <li class="nav-item {% if app.request.attributes.get('_route') == 'app_citas' %}active{% endif %}">
-                  <a class="nav-link" href="{{ path('app_citas', {'id': app.user.id}) }}"><i class="fas fa-calendar-alt"></i> Citas</a>
-                </li>
-                <li class="nav-item {% if app.request.attributes.get('_route') == 'app_consultas_clientes' %}active{% endif %}">
-                  <a class="nav-link" href="{{ path('app_consultas_clientes') }}"><i class="fas fa-calendar-alt"></i>Ver Consultas</a>
-                </li>
+                {% if 'ROLE_VETERINARIO' in app.user.roles %}
+                  <li class="nav-item {% if app.request.attributes.get('_route') == 'app_citas_veterinario' %}active{% endif %}">
+                    <a class="nav-link" href="{{ path('app_citas_veterinario')}}"><i class="fas fa-calendar-alt"></i>Inicio</a>
+                  </li>
+                  <li class="nav-item {% if app.request.attributes.get('_route') == 'app_historial_mascotas' %}active{% endif %}">
+                    <a class="nav-link" href="{{ path('app_historial_mascotas')}}"><i class="fas fa-calendar-alt"></i>Historial Pacientes</a>
+                  </li>
+                {% else %}
+                  <li class="nav-item {% if app.request.attributes.get('_route') == 'app_home' %}active{% endif %}">
+                    <a class="nav-link" href="{{ path('app_home') }}"><i class="fas fa-home"></i> Inicio</a>
+                  </li>
+                  <li class="nav-item {% if app.request.attributes.get('_route') == 'app_citas' %}active{% endif %}">
+                    <a class="nav-link" href="{{ path('app_citas', {'id': app.user.id}) }}"><i class="fas fa-calendar-alt"></i> Citas</a>
+                  </li>
+                  <li class="nav-item {% if app.request.attributes.get('_route') == 'app_consultas_clientes' %}active{% endif %}">
+                    <a class="nav-link" href="{{ path('app_consultas_clientes') }}"><i class="fas fa-calendar-alt"></i>Ver Consultas</a>
+                  </li>
+                {% endif %}
               </ul>
 
               <div class="quote_btn-container d-flex justify-content-end">

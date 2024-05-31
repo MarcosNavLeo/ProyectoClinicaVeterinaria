@@ -25,7 +25,7 @@ class UserCrudController extends AbstractCrudController
             EmailField::new('email', 'Correo electrónico'),
             TextField::new('firstName', 'Nombre'),
             TextField::new('lastName', 'Apellido'),
-            ImageField::new('photo', 'Foto')->setBasePath('imagenes/usuarios'),
+            ImageField::new('photo', 'Foto')->setUploadDir('public/imagenes'),
             AssociationField::new('citas', 'Citas'),
             AssociationField::new('mascotas', 'Mascotas')
         ];

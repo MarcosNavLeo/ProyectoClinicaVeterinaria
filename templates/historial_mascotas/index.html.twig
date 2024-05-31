@@ -1,0 +1,170 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+  Citas
+{% endblock %}
+
+{% block body %}
+  <!-- slider section -->
+  <section class="slider_section position-relative">
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+      <ol class="carousel-indicators">
+        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+        <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+      </ol>
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-4 offset-md-2">
+                <div class="slider_detail-box">
+                  <h1><span>Historial de mascotas</span></h1>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="slider_img-box">
+                  <img src="{{ asset('imagenes/slider-img.png') }}" alt="" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-4 offset-md-2">
+                <div class="slider_detail-box">
+                  <h1><span>Historial de mascotas</span></h1>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="slider_img-box">
+                  <img src="{{ asset('imagenes/slider-img.png') }}" alt="" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- end slider section -->
+
+  <!-- Listado de Mascotas -->
+  <section class="mascotas_section" style="margin-top: 60px;">
+    <div class="container">
+      <h2>Listado de Mascotas</h2>
+      <ul id="mascotas-lista" class="list-group">
+        <!-- Aquí se generará dinámicamente el listado de mascotas -->
+      </ul>
+    </div>
+  </section>
+
+  <style>
+    .mascotas_section h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+      font-size: 2rem;
+    }
+    #mascotas-lista {
+      list-style-type: none;
+      padding: 0;
+    }
+    #mascotas-lista li {
+      background: #f8f9fa;
+      border: 1px solid #dee2e6;
+      margin-bottom: 10px;
+      padding: 15px;
+      border-radius: 5px;
+      transition: background 0.3s;
+    }
+    #mascotas-lista li:hover {
+      background: #e2e6ea;
+    }
+    #mascotas-lista li span {
+      font-weight: bold;
+      cursor: pointer;
+      display: block;
+    }
+    .consulta {
+      display: none;
+      margin-top: 10px;
+      margin-left: 20px;
+      list-style-type: disc;
+    }
+    .consulta li {
+      background: #ffffff;
+      border: 1px solid #ced4da;
+      margin-bottom: 5px;
+      padding: 10px;
+      border-radius: 5px;
+    }
+  </style>
+
+  <script>
+// Función para generar el listado de mascotas
+function generarListadoMascotas(mascotas) {
+    const lista = $('#mascotas-lista');
+    lista.empty(); // Limpiar lista antes de agregar elementos nuevos
+
+    mascotas.forEach((mascota, index) => {
+        let consultasHTML = '';
+        if (mascota.consultas.length > 0) {
+            consultasHTML = mascota.consultas.map(consulta => `
+                <li>
+                    <strong>Fecha y hora:</strong> ${consulta.fecha_hora}<br>
+                    <strong>Diagnóstico:</strong> ${consulta.diagnostico}<br>
+                    <strong>Tratamiento:</strong> ${consulta.tratamientos_nombre}<br>
+                    <strong>Duración:</strong> ${consulta.tratamientos_duracion}<br>
+                    <strong>Costo:</strong> ${consulta.tratamientos_costo}<br>
+                    <strong>Medicamento:</strong> ${consulta.medicamento_nombre}<br>
+                    <strong>Instrucciones:</strong> ${consulta.medicamento_instrucciones}<br>
+                    <strong>Dosis:</strong> ${consulta.medicamento_dosis}
+                </li>`).join('');
+        } else {
+            consultasHTML = '<li>Esta mascota no tiene consultas</li>';
+        }
+
+        var imageUrl = window.location.origin + '/' + mascota.foto_mascota;
+        const mascotaItem = $(`
+            <li>
+                <span class="mascota-nombre" data-index="${index}">${mascota.mascota}</span>
+                <ul id="consultas-${index}" class="consulta">
+                    ${consultasHTML}
+                </ul>
+            </li>
+        `);
+        lista.append(mascotaItem);
+    });
+
+    // Asignar evento de click para mostrar/ocultar consultas
+    $('.mascota-nombre').click(function () {
+        const index = $(this).data('index');
+        $(`#consultas-${index}`).toggle();
+    });
+}
+
+// Función para obtener los datos de las mascotas de la API
+function obtenerDatosMascotas() {
+    $.ajax({
+        url: '/api/mascotas',
+        method: 'GET',
+        dataType: 'json',
+        success: function (mascotas) {
+            generarListadoMascotas(mascotas);
+        },
+        error: function (error) {
+            console.error('Error:', error);
+        }
+    });
+}
+
+// Obtener los datos al cargar la página
+$(document).ready(function () {
+    obtenerDatosMascotas();
+});
+  </script>
+{% endblock %}

@@ -20,8 +20,8 @@ class MedicamentosCrudController extends AbstractCrudController
     {
         return [
             TextField::new('nombre', 'Nombre del medicamento'),
-            TextField::new('descripcion', 'Descripción del medicamento'),
-            NumberField::new('precio', 'Precio del medicamento'),
+            TextField::new('instrucciones', 'Instrucciones del medicamento'),
+            TextField::new('dosis', 'dosis del medicamento'),
             AssociationField::new('tratamientos', 'Tratamientos')
         ];
     }
@@ -29,6 +29,5 @@ class MedicamentosCrudController extends AbstractCrudController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::section('Tratamientos');
-        // Aquí puedes agregar más elementos de menú si lo necesitas
     }
 }

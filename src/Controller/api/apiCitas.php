@@ -79,6 +79,8 @@ class apiCitas extends AbstractController
                 'end' => $cita->getFecha()->format('Y-m-d') . 'T' . $end_time->format('H:i'), // fecha y hora de finalización del evento
                 'color' => '#808080', // color del evento,
                 'motivo' => $cita->getMotivo(), // motivo de la cita
+                'cliente' => $cita->getUser()->getFirstName() . ' ' . $cita->getUser()->getLastName(),
+                'consulta' => $cita->getConsultas()[0] ? true : false,
             ];
         }
 

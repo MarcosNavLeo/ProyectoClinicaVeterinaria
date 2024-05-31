@@ -19,9 +19,6 @@ class Consultas
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $fecha_hora = null;
 
-    #[ORM\Column(length: 150)]
-    private ?string $sintomas = null;
-
     #[ORM\Column(length: 255)]
     private ?string $diagnostico = null;
 
@@ -46,18 +43,6 @@ class Consultas
     public function setFechaHora(\DateTimeInterface $fecha_hora): static
     {
         $this->fecha_hora = $fecha_hora;
-
-        return $this;
-    }
-
-    public function getSintomas(): ?string
-    {
-        return $this->sintomas;
-    }
-
-    public function setSintomas(string $sintomas): static
-    {
-        $this->sintomas = $sintomas;
 
         return $this;
     }
@@ -96,5 +81,10 @@ class Consultas
         $this->tratamientos = $tratamientos;
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->diagnostico;
     }
 }

@@ -46,8 +46,6 @@ $(document).ready(function () {
         },
         // Función para personalizar el contenido de los eventos en el calendario
         eventContent: function (arg) {
-            var startTime = new Date(arg.event.start);
-            var endTime = new Date(arg.event.end);
             var html = `
             <div class="event-title">${arg.event.title}</div>
         `;
@@ -113,7 +111,6 @@ $(document).ready(function () {
         // Función que se ejecuta al hacer clic en una fecha en el calendario
         dateClick: function (info) {
             var clickedDate = new Date(info.dateStr);
-            var clickedDateFormatted = clickedDate.toISOString();
             var now = new Date();
             if (clickedDate < now) {
                 // No se puede seleccionar una fecha pasada
@@ -202,8 +199,8 @@ $(document).ready(function () {
                                                 url: '/api/crear/citas',
                                                 type: 'POST',
                                                 data: formData,
-                                                contentType: false, // Necessario para FormData
-                                                processData: false, // Necessario para FormData
+                                                contentType: false,
+                                                processData: false, 
                                                 success: function (response) {
                                                     // Cita creada con éxito
                                                     Swal.fire({

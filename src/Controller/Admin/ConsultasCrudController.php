@@ -20,7 +20,6 @@ class ConsultasCrudController extends AbstractCrudController
     {
         return [
             DateTimeField::new('fecha_hora', 'Fecha y Hora'),
-            TextField::new('sintomas', 'Síntomas'),
             TextField::new('diagnostico', 'Diagnóstico'),
             AssociationField::new('citas', 'Citas'),
             AssociationField::new('tratamientos', 'Tratamientos')

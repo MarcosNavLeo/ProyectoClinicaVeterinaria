@@ -15,6 +15,9 @@ class RedirectController extends AbstractController
         if ($user && $security->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('admin');
         }
+        if ($user && $security->isGranted('ROLE_VETERINARIO')) {
+            return $this->redirectToRoute('app_citas_veterinario');
+        }
 
         return $this->redirectToRoute('app_home');
     }

@@ -27,7 +27,7 @@ class MascotasCrudController extends AbstractCrudController
             DateTimeField::new('fecha_nacimiento', 'Fecha de Nacimiento'),
             AssociationField::new('user', 'Propietario'),
             AssociationField::new('citas', 'Citas'),
-            ImageField::new('foto')->setUploadDir('imagenes/mascotas')
+            ImageField::new('foto')->setUploadDir('public/imagenes/mascotas')
         ];
     }
 }

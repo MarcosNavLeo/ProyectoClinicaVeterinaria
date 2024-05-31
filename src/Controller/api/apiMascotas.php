@@ -177,5 +177,4 @@ class apiMascotas extends AbstractController
 
         return new JsonResponse(['status' => 'OK', 'message' => 'Mascota eliminada junto con todas sus citas'], JsonResponse::HTTP_OK);
     }
-
 }
