@@ -71,18 +71,18 @@ class apiCitas extends AbstractController
                 $end_time = new DateTime($end_time->format('Y-m-d H:i:s'));
             }
             $end_time->modify('+1 hour');
-
+        
             $citasArray[] = [
-                'id' => $cita->getId(),
-                'title' => $cita->getMascotas()->getNombre(), // título del evento
-                'start' => $cita->getFecha()->format('Y-m-d') . 'T' . $cita->getHora()->format('H:i'), // fecha y hora de inicio del evento
-                'end' => $cita->getFecha()->format('Y-m-d') . 'T' . $end_time->format('H:i'), // fecha y hora de finalización del evento
-                'color' => '#808080', // color del evento,
-                'motivo' => $cita->getMotivo(), // motivo de la cita
-                'cliente' => $cita->getUser()->getFirstName() . ' ' . $cita->getUser()->getLastName(),
-                'consulta' => $cita->getConsultas()[0] ? true : false,
+                'id' => $cita->getId(), // ID de la cita
+                'title' => $cita->getMascotas()->getNombre(), // Nombre de la mascota
+                'start' => $cita->getFecha()->format('Y-m-d') . 'T' . $cita->getHora()->format('H:i'), // Fecha y hora de inicio
+                'end' => $cita->getFecha()->format('Y-m-d') . 'T' . $end_time->format('H:i'), // Fecha y hora de finalización
+                'color' => '#808080', // Color del evento
+                'motivo' => $cita->getMotivo(), // Motivo de la cita
+                'cliente' => $cita->getUser()->getFirstName() . ' ' . $cita->getUser()->getLastName(), // Nombre completo del cliente
+                'consulta' => $cita->getConsultas()[0] ? true : false, // Indicador de consulta
             ];
-        }
+        }        
 
         return new JsonResponse($citasArray, JsonResponse::HTTP_OK);
     }

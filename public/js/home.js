@@ -1,19 +1,27 @@
 $(document).ready(function () {
+  // Botón para añadir mascota
   var btnañadirMasco = $('#btnañadirMasco');
+  
+  // Inicialización del datepicker para la fecha de nacimiento de la mascota
   $('#fechaNacimientoMascota').datepicker({
     dateFormat: 'dd-mm-yy',
-    maxDate: 0,
-    changeYear: true
+    maxDate: 0, // No permitir fechas futuras
+    changeYear: true // Permitir cambio de año
   });
 
+  // Mostrar el modal para añadir una mascota al hacer clic en el botón
   btnañadirMasco.click(function () {
     $('#addPetModal').modal('show');
   });
 
+  // Ocultar el modal para añadir una mascota al hacer clic en el botón de cancelar o en el icono de cerrar
   $('#addPetModal .btn-secondary, #addPetModal .close').click(function () {
     $('#addPetModal').modal('hide');
   });
+
+  // Mostrar el indicador de carga
   $('#cargando').show();
+  // Obtener las mascotas del usuario
   $.ajax({
     url: '/api/mascotas/' + idUser,
     type: 'GET',
